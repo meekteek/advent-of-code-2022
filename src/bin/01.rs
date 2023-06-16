@@ -5,10 +5,9 @@ pub fn parse_input(input: &str) -> Option<Vec<u32>> {
         if line.is_empty() {
             values.push(total_calories);
             total_calories = 0;
-        }
-        else {
+        } else {
             total_calories += line.parse::<u32>().ok()?;
-        } 
+        }
     }
     values.sort();
     return Some(values);
@@ -23,9 +22,7 @@ pub fn part_one(input: &str) -> Option<u32> {
 pub fn part_two(input: &str) -> Option<u32> {
     let elves: Vec<u32> = parse_input(input)?;
     let biggest_elves = elves[elves.len() - 3..].to_vec();
-    let total_calories = biggest_elves.iter().fold(0, |acc, x| {
-        acc + x
-    });
+    let total_calories = biggest_elves.iter().sum();
     return Some(total_calories);
 }
 

@@ -1,4 +1,4 @@
-use std::{collections::HashSet, hash::Hash};
+use std::collections::HashSet;
 
 pub fn convert(duplicate: char) -> u32 {
     match duplicate {
@@ -32,9 +32,9 @@ pub fn part_two_sum(input: &str) -> Option<u32> {
             // put each chunk into a hashset to use .intersection function on each line
             let left_chunk: HashSet<char> = line[0].chars().collect();
             let middle_chunk: HashSet<char> = line[1].chars().collect();
-            let mut right_chunk  = line[2].chars().clone();
+            let mut right_chunk = line[2].chars().clone();
 
-            let first_matches: HashSet<_> = left_chunk.intersection(&middle_chunk).collect();           
+            let first_matches: HashSet<_> = left_chunk.intersection(&middle_chunk).collect();
             let same_char = right_chunk.find(|x| first_matches.contains(&x));
             count += convert(same_char.unwrap());
         }

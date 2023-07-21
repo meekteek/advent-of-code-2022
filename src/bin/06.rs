@@ -2,27 +2,32 @@ pub fn part_one_solve(input: &str) -> Option<u32> {
     let mut output_index = 0;
     for (index, value) in input.chars().enumerate() {
         if index >= 3 {
-            let test = input.chars().nth(index-3).unwrap();
-            let test2 = input.chars().nth(index-2).unwrap();
-            let test3 = input.chars().nth(index-1).unwrap();
+            let test = input.chars().nth(index - 3).unwrap();
+            let test2 = input.chars().nth(index - 2).unwrap();
+            let test3 = input.chars().nth(index - 1).unwrap();
             let test4 = value;
-            if !(test == test2 || test2 == test3 || test3 == test4 || test4 == test || test2 == test4 || test3 == test)
+            if !(test == test2
+                || test2 == test3
+                || test3 == test4
+                || test4 == test
+                || test2 == test4
+                || test3 == test)
             {
                 output_index = index as u32 + 1;
                 break;
             }
         }
-    };
+    }
     Some(output_index)
 }
 
 pub fn part_two_solve(input: &str) -> Option<u32> {
-    let mut total_chars: Vec<char> = input.chars().collect();
+    let total_chars: Vec<char> = input.chars().collect();
 
     for i in 14..total_chars.len() {
         let mut start_of_packet = true;
-        let chars = &total_chars[i-14..i];
-        
+        let chars = &total_chars[i - 14..i];
+
         for char in chars {
             if chars.iter().filter(|c| c == &char).count() > 1 {
                 start_of_packet = false;

@@ -71,14 +71,14 @@ impl Grid {
 }
 
 pub fn parse_part_one(input: &str) -> Option<u32> {
-    let mut map: Vec<Vec<usize>> = Vec::new();
-    input.lines().for_each(|line| {
-        let mut row = Vec::new();
-        line.chars().for_each(|c| {
-            row.push(c.to_digit(10).unwrap() as usize);
-        });
-        map.push(row);
-    });
+    let map: Vec<Vec<usize>> = input
+        .lines()
+        .map(|line| {
+            line.chars()
+                .map(|c| c.to_digit(10).unwrap() as usize)
+                .collect()
+        })
+        .collect();
     let plot_of_trees = Grid::new(map.clone());
     let mut visible_trees: u32 = (map.len() * 2 + (map[0].len() - 2) * 2) as u32;
 
@@ -87,16 +87,13 @@ pub fn parse_part_one(input: &str) -> Option<u32> {
             let mut visible = false;
             let tree_size = map[i][j] as usize;
 
-            // for each position, check if visible from row
+            // for each position, check if visible from row or column
             let left_range = 0..j;
             let right_range = j + 1..map[i].len();
-            visible = plot_of_trees.test_row(left_range, i, tree_size)
-                || plot_of_trees.test_row(right_range, i, tree_size);
-
-            // check for column position
             let top_range = 0..i;
             let bottom_range = i + 1..map.len();
-            visible = visible
+            visible = plot_of_trees.test_row(left_range, i, tree_size)
+                || plot_of_trees.test_row(right_range, i, tree_size)
                 || plot_of_trees.test_column(top_range, j, tree_size)
                 || plot_of_trees.test_column(bottom_range, j, tree_size);
 
@@ -129,10 +126,10 @@ pub fn parse_part_two(input: &str) -> Option<u32> {
             let right_range = j + 1..map[i].len();
             let top_range = 0..i;
             let bottom_range = i + 1..map.len();
-            trees_count *= plot_of_trees.get_row_count(left_range, i, tree_size);
-            trees_count *= plot_of_trees.get_row_count(right_range, i, tree_size);
-            trees_count *= plot_of_trees.get_column_count(top_range, j, tree_size);
-            trees_count *= plot_of_trees.get_column_count(bottom_range, j, tree_size);
+            trees_count *= plot_of_trees.get_row_count(left_range, i, tree_size)
+                * plot_of_trees.get_row_count(right_range, i, tree_size)
+                * plot_of_trees.get_column_count(top_range, j, tree_size)
+                * plot_of_trees.get_column_count(bottom_range, j, tree_size);
             max_trees = max_trees.max(trees_count);
         }
     }

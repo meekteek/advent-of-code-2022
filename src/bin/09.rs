@@ -86,7 +86,6 @@ pub fn parse_two(input: &str) -> u32 {
     .iter()
     .cloned()
     .collect();
-
     input.lines().for_each(|line| {
         let chars_in_line: Vec<char> = line.chars().collect();
         directions.push(match chars_in_line[0] {
@@ -100,22 +99,19 @@ pub fn parse_two(input: &str) -> u32 {
         distances.push(num_str.parse().unwrap());
     });
     let mut rope_pieces: Vec<(i32, i32)> = vec![(0, 0); 10];
-
     let mut positions: HashMap<(i32, i32), String> = HashMap::new();
     positions.insert((0, 0), String::from(""));
 
-    // for each direction, move the head and tail
     for (direction, distance) in directions.iter().zip(distances.iter()) {
-        // have to run through each distance in the list of distances to check each piece of rope
-        for ignore in 0..*distance {
+        for _ in 0..*distance {
             rope_pieces[0] = (
                 rope_pieces[0].0 + direction_map[direction].0,
                 rope_pieces[0].1 + direction_map[direction].1,
             );
 
             for i in 1..rope_pieces.len() {
-                let (mut tail_left, mut tail_right) = rope_pieces.split_at_mut(i);
-                let (mut tail_parent, mut tail_right) = (tail_left[i - 1], &mut tail_right[0]);
+                let (tail_left, tail_right) = rope_pieces.split_at_mut(i);
+                let (tail_parent, tail_right) = (tail_left[i - 1], &mut tail_right[0]);
 
                 if tail_parent.1.abs_diff(tail_right.1) > 1
                     || tail_parent.0.abs_diff(tail_right.0) > 1
@@ -163,6 +159,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let input = advent_of_code::read_file("examples", 9);
-        assert_eq!(part_two(&input), Some(9));
+        assert_eq!(part_two(&input), Some(1));
     }
 }
